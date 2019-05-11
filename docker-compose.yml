@@ -7,6 +7,7 @@ services:
       - "9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus 
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --web.external-url=http://localhost:9090/prometheus
@@ -14,13 +15,12 @@ services:
     restart: always
 
   node_exporter:
-     network_mode: bridge
      image: prom/node-exporter-linux-armv7
      expose:
       - "9100"
-                     
+
   alertmanager:
-    network_mode: bridge
+    network_mode: host
     image: prom/alertmanager:latest
     expose:
       - "9093"
@@ -54,3 +54,9 @@ services:
     ports:
       - 443:443
     restart: always
+    volumes: 
+      - grafana_data:/var/lib/grafana
+
+volumes:
+        prometheus_data: {}
+        grafana_data: {}   
