@@ -1,7 +1,7 @@
 version: '2.0'
 services:
   prometheus:
-    image: prom/prometheus:latest
+    image: ajeetraina/prometheus-armv7
     ports:
       - 9090:9090
     volumes:
@@ -10,22 +10,27 @@ services:
       - --config.file=/etc/prometheus/prometheus.yml
     restart: always
 
+  node_exporter:
+     image: prom/node-exporter-linux-armv7
+     ports:
+      - 9100:9100
+                     
   alertmanager:
     image: prom/alertmanager:latest
     ports:
       - 9093:9093
     restart: always
 
-  cadvisor:
-    image: google/cadvisor:latest
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    ports:
-      - 8080:8080
-    restart: always
+    #  cadvisor:
+    #    image: google/cadvisor:latest
+    #    volumes:
+    #      - /:/rootfs:ro
+    #      - /var/run:/var/run:rw
+    #      - /sys:/sys:ro
+    #     - /var/lib/docker/:/var/lib/docker:ro
+    # ports:
+    # - 8080:8080
+    # restart: always
 
   grafana:
     image: grafana/grafana
