@@ -42,11 +42,12 @@ services:
     network_mode: bridge
     image: grafana/grafana
     user: "104"
-    command:
-      -
     expose:
       - "3000"
     restart: always
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./custom.ini:/etc/grafana/custom.ini
 
   nginx:
     network_mode: bridge
@@ -54,8 +55,9 @@ services:
     ports:
       - 443:443
     restart: always
-    volumes: 
-      - grafana_data:/var/lib/grafana
+    volumes:
+      - ./nginx:/etc/nginx:ro
+      - /etc/nginx/certs:/root/certs/monitoring.com
 
 volumes:
         prometheus_data: {}
