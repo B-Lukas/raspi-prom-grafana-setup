@@ -22,7 +22,7 @@ scrape_configs:
     static_configs:
       - targets:
           - alertmanager:9093
-          -
+          
   - job_name: blackbox_exporter
     scrape_interval: 5s
     static_configs:
