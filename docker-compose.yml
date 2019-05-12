@@ -1,18 +1,18 @@
-version: '2.0'
+version: '3.0'
 services:
   prometheus:
-    network_mode: bridge
     image: ajeetraina/prometheus-armv7
-    expose:
-      - "9090"
+    ports:
+      - 9090:9090
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus 
     command:
       - --config.file=/etc/prometheus/prometheus.yml
-      - --web.external-url=http://localhost:9090/prometheus
-      - --web.route-prefix="/"
+      - --web.external-url=https://192.168.0.6/prometheus
+      - --web.route-prefix=/ 
     restart: always
+    container_name: prometheus
 
   node_exporter:
      image: prom/node-exporter-linux-armv7
@@ -20,11 +20,11 @@ services:
       - "9100"
 
   alertmanager:
-    network_mode: host
     image: prom/alertmanager:latest
     expose:
       - "9093"
     restart: always
+    container_name: alertmanager
 
 # This image does not work for the raspberry pi
     #  cadvisor:
@@ -39,7 +39,6 @@ services:
     # restart: always
 
   grafana:
-    network_mode: bridge
     image: grafana/grafana
     user: "104"
     expose:
@@ -49,15 +48,13 @@ services:
       - grafana_data:/var/lib/grafana
       - ./custom.ini:/etc/grafana/custom.ini
 
-  nginx:
-    network_mode: bridge
+  nginx_container:
     image: nginx:latest
     ports:
       - 443:443
     restart: always
-    volumes:
-      - ./nginx:/etc/nginx:ro
-      - /etc/nginx/certs:/root/certs/monitoring.com
+    volumes:  
+      - ./nginx/:/etc/nginx/
 
 volumes:
         prometheus_data: {}
