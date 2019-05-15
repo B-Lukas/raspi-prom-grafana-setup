@@ -15,12 +15,15 @@ services:
     restart: always
 
   node_exporter:
+     restart: always     
      network_mode: bridge    
      image: prom/node-exporter-linux-armv7
      ports:
         - 9100:9100
      links:
-        - prometheus:prometheus   
+        - prometheus:prometheus 
+     depends_on:
+             - prometheus     
 
   alertmanager:
     network_mode: bridge     
@@ -31,6 +34,8 @@ services:
     container_name: alertmanager
     links:
         - prometheus:prometheus
+    depends_on:
+            - prometheus      
 
 # This image does not work for the raspberry pi
     #  cadvisor:
@@ -56,6 +61,8 @@ services:
       - ./grafana/:/etc/grafana/
     links:
       - prometheus:prometheus
+    depends_on:
+            - prometheus    
 
   nginx:
     network_mode: bridge        
@@ -67,6 +74,8 @@ services:
       - ./nginx/:/etc/nginx/
     links:
       - prometheus:prometheus
+    depends_on:
+            - prometheus    
 
 volumes:
         prometheus_data: {}
