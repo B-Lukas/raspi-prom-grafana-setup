@@ -80,6 +80,7 @@ services:
   blackbox_exporter:
     network_mode: bridge
     image: p0sa/blackbox_exporter_pi:latest
+    restart: always
     ports:
       - 9115:9115
     links: 
