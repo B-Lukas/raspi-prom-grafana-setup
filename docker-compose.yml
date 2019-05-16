@@ -77,6 +77,16 @@ services:
     depends_on:
             - prometheus    
 
+  service: blackbox_exporter
+    network_mode: bridge
+    image: p0sa/blackbox_exporter_pi:latest
+    ports:
+      - 9115:9115
+    links: 
+      - prometheus:prometheus
+    depends_on:
+            - prometheus   
+   
 volumes:
         prometheus_data: {}
         grafana_data: {}   
