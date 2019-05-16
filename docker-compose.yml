@@ -77,7 +77,7 @@ services:
     depends_on:
             - prometheus    
 
-  service: blackbox_exporter
+  blackbox_exporter:
     network_mode: bridge
     image: p0sa/blackbox_exporter_pi:latest
     ports:
