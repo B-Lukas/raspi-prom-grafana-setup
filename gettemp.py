@@ -21,7 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import Adafruit_DHT
-
+import os
+import time
 # Sensor should be set to Adafruit_DHT.DHT11,
 # Adafruit_DHT.DHT22, or Adafruit_DHT.AM2302.
 sensor = Adafruit_DHT.AM2302
@@ -36,27 +37,33 @@ pin = 4
 
 # Try to grab a sensor reading.  Use the read_retry method which will retry up
 # to 15 times to get a sensor reading (waiting 2 seconds between each retry).
-humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+
+while(True):
+
+  humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
 
 # Note that sometimes you won't get a reading and
 # the results will be null (because Linux can't
 # guarantee the timing of calls to read the sensor).
 # If this happens try again!
-if humidity is not None and temperature is not None:
+  if humidity is not None and temperature is not None:
 
     humidityString= 'Humidity ' + str(humidity) + "\n"
-    f= open("/home/pi/textfiles/temp.prom", "w+")
+    f= open("/home/pi/textfiles/humidity.prom.$$", "w+")
     f.write(humidityString)
     f.close()
     
     temperatureString= 'Temperature ' + str(temperature) + "\n"
-    f= open("/home/pi/textfiles/humidity.prom", "w+")
+    f= open("/home/pi/textfiles/temperature.prom.$$", "w+")
     f.write(temperatureString)
     f.close
+ 
+    os.rename('/home/pi/textfiles/humidity.prom.$$', '/home/pi/textfiles/humidity.prom')
+    os.rename('/home/pi/textfiles/temperature.prom.$$', '/home/pi/textfiles/temperature.prom')
 
-else:
+  else:
     print('Failed to get reading. Try again!')
 
-
+  time.sleep(1)  
 
 

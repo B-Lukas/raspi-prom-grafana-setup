@@ -1,0 +1,13 @@
+[Unit]
+Description=starts the polling for the raspi sensor python script
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi
+ExecStart=/home/pi/RaspberryPiPromGrafana/gettemp.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -31,7 +31,7 @@ services:
      depends_on:
         - prometheus
      volumes:
-        - /home/pi/textfiles:/home/pi/textfiles:rw
+        - /home/pi/textfiles:/home/pi/textfiles
      privileged: true 
      logging:
       options:       
