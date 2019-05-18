@@ -13,17 +13,30 @@ services:
       - --web.external-url=https://localhost/prometheus
       - --web.route-prefix=/ 
     restart: always
+    logging:
+      options:       
+        max-file: "1"
+        max-size: "1m"       
 
   node_exporter:
      restart: always     
      network_mode: bridge    
      image: prom/node-exporter-linux-armv7
+     command:    
+        - --collector.textfile.directory=/home/pi/textfiles     
      ports:
         - 9100:9100
      links:
         - prometheus:prometheus 
      depends_on:
-             - prometheus     
+        - prometheus
+     volumes:
+        - /home/pi/textfiles:/home/pi/textfiles:rw
+     privileged: true 
+     logging:
+      options:       
+        max-file: "1"
+        max-size: "1m"       
 
   alertmanager:
     network_mode: bridge     
@@ -36,6 +49,10 @@ services:
         - prometheus:prometheus
     depends_on:
             - prometheus      
+    logging:
+      options:       
+        max-file: "1"
+        max-size: "1m"       
 
 # This image does not work for the raspberry pi
     #  cadvisor:
@@ -63,6 +80,10 @@ services:
       - prometheus:prometheus
     depends_on:
             - prometheus    
+    logging:
+      options:       
+        max-file: "1"
+        max-size: "1m"       
 
   nginx:
     network_mode: bridge        
@@ -76,6 +97,10 @@ services:
       - prometheus:prometheus
     depends_on:
             - prometheus    
+    logging:
+      options:       
+        max-file: "1"
+        max-size: "1m"       
 
   blackbox_exporter:
     network_mode: bridge
@@ -87,7 +112,12 @@ services:
       - prometheus:prometheus
     depends_on:
             - prometheus   
-   
+    logging:
+      options:       
+        max-file: "1"
+        max-size: "1m"       
+
+             
 volumes:
         prometheus_data: {}
         grafana_data: {}   
