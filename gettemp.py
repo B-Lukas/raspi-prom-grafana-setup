@@ -48,18 +48,21 @@ while(True):
 # If this happens try again!
   if humidity is not None and temperature is not None:
 
-    humidityString= 'Humidity ' + str(humidity) + "\n"
+      
+    humidityString= 'humidity ' + str(humidity) + "\n"
     f= open("/home/pi/textfiles/humidity.prom.$$", "w+")
     f.write(humidityString)
     f.close()
-    
-    temperatureString= 'Temperature ' + str(temperature) + "\n"
-    f= open("/home/pi/textfiles/temperature.prom.$$", "w+")
-    f.write(temperatureString)
-    f.close
- 
+    print('current humidity '+ str(humidity))
+
+    tempString= 'temperature ' + str(temperature) + "\n"
+    f= open("/home/pi/textfiles/temp.prom.$$", "w+")
+    f.write(tempString)
+    f.close()
+    print('current temp ' + str(temperature))
+
     os.rename('/home/pi/textfiles/humidity.prom.$$', '/home/pi/textfiles/humidity.prom')
-    os.rename('/home/pi/textfiles/temperature.prom.$$', '/home/pi/textfiles/temperature.prom')
+    os.rename('/home/pi/textfiles/temp.prom.$$', '/home/pi/textfiles/temp.prom')
 
   else:
     print('Failed to get reading. Try again!')

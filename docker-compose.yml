@@ -18,25 +18,25 @@ services:
         max-file: "1"
         max-size: "1m"       
 
-  node_exporter:
-     restart: always     
-     network_mode: bridge    
-     image: prom/node-exporter-linux-armv7
-     command:    
-        - --collector.textfile.directory=/home/pi/textfiles     
-     ports:
-        - 9100:9100
-     links:
-        - prometheus:prometheus 
-     depends_on:
-        - prometheus
-     volumes:
-        - /home/pi/textfiles:/home/pi/textfiles
-     privileged: true 
-     logging:
-      options:       
-        max-file: "1"
-        max-size: "1m"       
+        #node_exporter:
+        # restart: always     
+        # network_mode: bridge    
+        # image: prom/node-exporter-linux-armv7
+        # command:    
+        #- --collector.textfile.directory=/home/pi/textfiles     
+        # ports:
+        # - 9100:9100
+        # links:
+        # - prometheus:prometheus 
+        #depends_on:
+        #- prometheus
+        # volumes:
+        # - /home/pi/textfiles:/home/pi/textfiles
+        #privileged: true 
+        #logging:
+        # options:       
+        # max-file: "1"
+        #max-size: "1m"      
 
   alertmanager:
     network_mode: bridge     
@@ -53,18 +53,6 @@ services:
       options:       
         max-file: "1"
         max-size: "1m"       
-
-# This image does not work for the raspberry pi
-    #  cadvisor:
-    #    image: google/cadvisor:latest
-    #    volumes:
-    #      - /:/rootfs:ro
-    #      - /var/run:/var/run:rw
-    #      - /sys:/sys:ro
-    #     - /var/lib/docker/:/var/lib/docker:ro
-    # ports:
-    # - 8080:8080
-    # restart: always
 
   grafana:
     network_mode: bridge       
@@ -117,7 +105,22 @@ services:
         max-file: "1"
         max-size: "1m"       
 
-             
+  cadvisor:
+       image: budry/cadvisor-arm
+       volumes:
+                - /:/rootfs:ro
+                - /var/run:/var/run:rw
+                - /sys:/sys
+                - /var/lib/docker/:/var/lib/docker:ro
+                - /dev/disk/:/dev/disk:ro
+       ports:
+          - 8080:8080        
+       restart: always
+       privileged: true
+       logging:
+        options:
+            max-file: "1"
+            max-size: "1m"
 volumes:
         prometheus_data: {}
         grafana_data: {}   
