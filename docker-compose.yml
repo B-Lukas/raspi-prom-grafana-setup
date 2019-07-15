@@ -1,8 +1,8 @@
-version: '3.0'
+version: '2.0'
 services:
   prometheus:
     network_mode: bridge
-    image: ajeetraina/prometheus-armv7
+    image: evns/rpi-prometheus
     expose:
       - "9090"
     volumes:
@@ -11,52 +11,16 @@ services:
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --web.external-url=https://localhost/prometheus
-      - --web.route-prefix=/ 
+      - --web.route-prefix=/
     restart: always
     logging:
       options:       
         max-file: "1"
-        max-size: "1m"       
-
-        #node_exporter:
-        # restart: always     
-        # network_mode: bridge    
-        # image: prom/node-exporter-linux-armv7
-        # command:    
-        #- --collector.textfile.directory=/home/pi/textfiles     
-        # ports:
-        # - 9100:9100
-        # links:
-        # - prometheus:prometheus 
-        #depends_on:
-        #- prometheus
-        # volumes:
-        # - /home/pi/textfiles:/home/pi/textfiles
-        #privileged: true 
-        #logging:
-        # options:       
-        # max-file: "1"
-        #max-size: "1m"      
-
-        #  alertmanager:
-        # network_mode: bridge     
-        # image: prom/alertmanager:latest
-        # expose:
-        #  - "9093"
-        # restart: always
-        # container_name: alertmanager
-        # links:
-        # - prometheus:prometheus
-        #depends_on:
-        #     - prometheus      
-        #logging:
-        #options:       
-        #max-file: "1"
-        #max-size: "1m"       
+        max-size: "1m"  
 
   grafana:
     network_mode: bridge       
-    image: grafana/grafana
+    image: grafana/grafana:latest
     user: "104"
     ports:
       - 3000:3000
@@ -104,23 +68,8 @@ services:
       options:       
         max-file: "1"
         max-size: "1m"       
+ 
 
-        #cadvisor:
-        #image: budry/cadvisor-arm
-        # volumes:
-        #        - /:/rootfs:ro
-        #       - /var/run:/var/run:rw
-        #       - /sys:/sys
-        #       - /var/lib/docker/:/var/lib/docker:ro
-        #       - /dev/disk/:/dev/disk:ro
-        # ports:
-        #  - 8080:8080        
-        #restart: always
-        #privileged: true
-        #logging:
-        #options:
-        #    max-file: "1"
-        #    max-size: "1m"
 volumes:
         prometheus_data: {}
         grafana_data: {}   

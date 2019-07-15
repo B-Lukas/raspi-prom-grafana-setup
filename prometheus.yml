@@ -1,18 +1,18 @@
-scrape_configs:
+scrape_configs:      
+
   - job_name: prometheus
     scrape_interval: 5s
     static_configs:
-      - targets:
-          - localhost:9090
-        labels:
-            group: 'prometheus'      
+     - targets:
+             - localhost:9090
+               
 
   - job_name: node_exporter
     scrape_interval: 5s
     static_configs:
-      - targets:
-          - 192.168.0.6:9100
-        labels:
+     - targets:
+         - 192.168.0.6:9100
+       labels:
             group: 'node_exporter'    
 
   - job_name: grafana
@@ -46,6 +46,13 @@ scrape_configs:
     # static_configs:
             # - targets:
                     # - 192.168.0.6:8080
+
+  - job_name: flowercare
+    scrape_interval: 45s
+    static_configs:
+        - targets: 
+            - 192.168.0.6:9294
+
 
   - job_name: ping
     scrape_interval: 1s
