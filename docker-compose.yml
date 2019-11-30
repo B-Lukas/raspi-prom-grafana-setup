@@ -2,10 +2,9 @@ version: '2.0'
 services:
   prometheus:
     container_name: prometheus       
-    network_mode: bridge
     image: prom/prometheus:latest
     ports:
-      - "9090:9090"
+      - 9090:9090
     user: "root"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
@@ -20,7 +19,6 @@ services:
 
   grafana:
     container_name: grafana      
-    network_mode: bridge       
     image: grafana/grafana:latest
     user: "104"
     ports:
@@ -36,25 +34,30 @@ services:
     logging:
       options:       
         max-file: "1"
-        max-size: "1m"       
+        max-size: "1m"   
 
-  nginx:
-    container_name: nginx      
-    network_mode: bridge        
-    image: nginx:latest
+  loki:
+    container_name: loki
     ports:
-      - 443:443
+      - 3100:3100    
+    image: grafana/loki:latest
     restart: always
-    volumes:  
-      - ./nginx/:/etc/nginx/
     links:
       - prometheus:prometheus
     depends_on:
-            - prometheus    
+      - prometheus
+    #command: -config.file=/etc/loki/local-config.yaml   
     logging:
       options:       
         max-file: "1"
         max-size: "1m"       
+
+  promtail:
+    container_name: promtail
+    image: grafana/promtail:latest
+    volumes:
+      - /var/log:/var/log
+    #command: -config.file=/etc/promtail/docker-config.yaml
 
 volumes:
         prometheus_data: {}
