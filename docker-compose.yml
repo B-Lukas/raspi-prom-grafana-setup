@@ -55,12 +55,14 @@ services:
   promtail:
     container_name: promtail
     image: grafana/promtail:latest
+    depends_on:
+      - loki
     volumes:
       - /var/log:/var/log
       - ./promtail.yml:/etc/promtail/promtail.yml
-    command: -config.file=/etc/promtail/promtail.yaml
+    command: "-config.file=/etc/promtail/promtail.yml"
     restart: always
 
 volumes:
-        prometheus_data: {}
-        grafana_data: {}   
+   prometheus_data: {}
+   grafana_data: {}   
